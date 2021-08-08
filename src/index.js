@@ -1,15 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
+
+import Routes from "Routes";
+import { AuthProvider } from "./contexts/AuthContext";
+import reportWebVitals from "./reportWebVitals";
+import "./index.css";
 
 ReactDOM.render(
     <React.StrictMode>
         <Router>
             <Switch>
-                <App />
+            <AuthProvider>
+                <Routes/>
+            </AuthProvider>
             </Switch>
         </Router>
     </React.StrictMode>,
