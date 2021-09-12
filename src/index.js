@@ -6,7 +6,7 @@ import Routes from 'Routes'
 import { AuthProvider } from './contexts/AuthContext'
 import reportWebVitals from './reportWebVitals'
 
-import './index.css'
+import './scss/main.scss'
 import 'antd/dist/antd.css'
 
 ReactDOM.render(
