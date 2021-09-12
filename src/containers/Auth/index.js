@@ -1,32 +1,43 @@
 import GoogleLogin from 'react-google-login'
 import React, { useContext, useState } from 'react'
-import { Row, Col, Form } from 'antd'
+import { Row, Col, Form, message, Tabs } from 'antd'
+import { useHistory } from 'react-router'
 
 import { AuthContext } from 'contexts/AuthContext'
 
 import Input from 'components/Input'
 import Card from 'components/Card'
 import Button from 'components/Button'
+import axios from 'axios'
 
 const { REACT_APP_CLIENT_ID } = process.env
-const registerInitialState = {
-    name: '',
-    email: '',
-    password: '',
-}
 
 const Auth = () => {
     const { responseGoogle } = useContext(AuthContext)
-    const [registrationData, setRegisterData] = useState(registerInitialState)
-    console.log(registrationData)
+    const [tab, setTab] = useState('register')
 
-    const handleInputChange = (e) => {
-        setRegisterData({
-            ...registrationData,
-            [e.target.name]: e.target.value,
-        })
+    const history = useHistory()
+
+    const { TabPane } = Tabs
+
+    const submitRegistrationForm = (userData) => {
+        const baseUrl =
+            tab === 'register'
+                ? 'http://localhost:5002/api/users'
+                : 'http://localhost:5002/api/users/login'
+        axios
+            .post(baseUrl, userData)
+            .then((response) => {
+                const { token, _id } = response?.data
+                localStorage.setItem('token', token)
+                localStorage.setItem('user_id', _id)
+                if (token) {
+                    message.success('User registered successfully')
+                    history.push('/dashboard')
+                }
+            })
+            .catch((err) => message.error(err?.response?.data?.message))
     }
-    const submitRegistrationForm = () => {}
     return (
         <div className="App">
             <Row justify="center">
@@ -45,27 +56,90 @@ const Auth = () => {
                             }}
                             size={'default'}
                             autoComplete="off"
-                            onSubmitCapture={(e) => submitRegistrationForm(e)}
+                            onFinish={(e) => submitRegistrationForm(e)}
                         >
-                            <Form.Item label="Name">
-                                <Input
-                                    onChange={handleInputChange}
-                                    placeholder="Name"
-                                />
-                            </Form.Item>
-                            <Form.Item label="Email">
-                                <Input
-                                    onChange={handleInputChange}
-                                    placeholder="Email"
-                                />
-                            </Form.Item>
-                            <Form.Item label="Password">
-                                <Input
-                                    onChange={handleInputChange}
-                                    type="password"
-                                    placeholder="Password"
-                                />
-                            </Form.Item>
+                            <Tabs
+                                destroyInactiveTabPane={true}
+                                defaultActiveKey={tab}
+                                onChange={(tab) => setTab(tab)}
+                                type="card"
+                            >
+                                <TabPane tab="Register" key="register">
+                                    <Form.Item
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    'Please input your Name!',
+                                            },
+                                        ]}
+                                        label="Name"
+                                        name="name"
+                                    >
+                                        <Input placeholder="Name" />
+                                    </Form.Item>
+                                    <Form.Item
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    'Please input your Email!',
+                                            },
+                                        ]}
+                                        label="Email"
+                                        name="email"
+                                    >
+                                        <Input placeholder="Email" />
+                                    </Form.Item>
+                                    <Form.Item
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    'Please input your Password!',
+                                            },
+                                        ]}
+                                        label="Password"
+                                        name="password"
+                                    >
+                                        <Input
+                                            type="password"
+                                            placeholder="Password"
+                                        />
+                                    </Form.Item>
+                                </TabPane>
+                                <TabPane tab="Login" key="login">
+                                    <Form.Item
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    'Please input your Email!',
+                                            },
+                                        ]}
+                                        label="Email"
+                                        name="email"
+                                    >
+                                        <Input placeholder="Email" />
+                                    </Form.Item>
+                                    <Form.Item
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    'Please input your Password!',
+                                            },
+                                        ]}
+                                        label="Password"
+                                        name="password"
+                                    >
+                                        <Input
+                                            type="password"
+                                            placeholder="Password"
+                                        />
+                                    </Form.Item>
+                                </TabPane>
+                            </Tabs>
                             <Button type="primary" block htmlType="submit">
                                 Submit
                             </Button>
