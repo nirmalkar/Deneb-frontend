@@ -1,14 +1,16 @@
-import React from "react"
-import { Route } from "react-router"
+import React from 'react'
+import { Route } from 'react-router'
 
-import Auth from "containers/Auth"
+import Auth from 'containers/Auth'
+import Dashboard from 'containers/Dashboard'
 
-const Routes = () =>{
+const Routes = () => {
     return (
         <>
-        <Route  path="/" component={Auth}/>
+            <Route exact path="/" component={Auth} />
+            <Route path="/dashboard" component={Dashboard} />
         </>
     )
 }
 
-export default Routes 
+export default Routes
