@@ -1,0 +1,45 @@
+.auth-container {
+    position: relative;
+    height: 100vh;
+    width: 100vh;
+    margin: 0 auto;
+
+    .auth-row {
+        position: absolute;
+        width: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    @media screen and (max-width: 769px) {
+        .auth-row {
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+    .auth-google-div {
+        padding: 1rem;
+        font-weight: 600;
+        text-align: center;
+    }
+    .google-btn {
+        display: inline-block;
+        background: white;
+        color: #444;
+        height: 3.2rem;
+        width: 100%;
+        border-radius: 5px;
+        border: thin solid #888;
+        box-shadow: 1px 1px 1px grey;
+        white-space: nowrap;
+    }
+    .google-img {
+        width: 2rem;
+        position: absolute;
+        bottom: 3rem;
+        left: 3.5rem;
+    }
+}
