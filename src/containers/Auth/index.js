@@ -25,8 +25,8 @@ const Auth = () => {
     const submitRegistrationForm = (userData) => {
         const baseUrl =
             tab === 'register'
-                ? 'http://localhost:5002/api/users'
-                : 'http://localhost:5002/api/users/login'
+                ? 'https://lyftrac.herokuapp.com/api/users'
+                : 'https://lyftrac.herokuapp.com/api/users/login'
         axios
             .post(baseUrl, userData)
             .then((response) => {
