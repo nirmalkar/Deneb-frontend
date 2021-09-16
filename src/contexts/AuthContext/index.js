@@ -1,10 +1,13 @@
 import React from 'react'
 
+import { message } from 'antd'
 import NProgress from 'nprogress'
 import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
-import { BASE_URL } from 'constants/authConstants'
+
+import { BASE_URL, getAuthHeaders } from 'constants/authConstants'
+import { removeAuthToken, setLocalStorage } from './Auth'
 
 const initialState = {
     error: {},
@@ -64,15 +67,6 @@ const AuthReducer = (state, action) => {
 export const AuthProvider = ({ children }) => {
     const [state, dispatch] = React.useReducer(AuthReducer, initialState)
     const history = useHistory()
-
-    // function handleError(error) {
-    //   // showErrorToast(error)
-    //   dispatch({
-    //     payload: error,
-    //     type: "SET_ERROR",
-    //   })
-    // }
-
     function setLoader(isLoading) {
         dispatch({ payload: isLoading, type: 'SET_LOADER' })
     }
@@ -81,29 +75,49 @@ export const AuthProvider = ({ children }) => {
         dispatch({ payload: user, type: 'LOGIN_USER' })
     }
 
-    async function loginUser(user) {
-        if (user) {
-            NProgress.start()
-            dispatch({ payload: true, type: 'SET_LOADER' })
-            try {
-                await axios.post(`${BASE_URL}/api/users/`, user)
-                NProgress.done()
-            } catch (err) {
-                NProgress.done()
-                console.log(err)
+    async function checkUserAuthorization() {
+        dispatch({ payload: true, type: 'SET_LOADER' })
+        const token = localStorage.getItem('token')
+        if (token) {
+            const headers = getAuthHeaders(token)
+            const response = await axios.get(
+                `${BASE_URL}/users/profile`,
+                headers
+            )
+            const { data } = response
+            dispatch({ payload: data, type: 'LOGIN_USER' })
+            if (history.location.pathname === '/') {
+                history.push('/dashboard')
             }
+            dispatch({ payload: false, type: 'SET_LOADER' })
+        } else {
+            history.push('/')
+            dispatch({ payload: false, type: 'SET_LOADER' })
         }
     }
 
-    async function registerUser(user) {
+    async function authenticateUser({ userData, tab }) {
         dispatch({ payload: true, type: 'SET_LOADER' })
         NProgress.start()
+        const baseUrl =
+            tab === 'register' ? `${BASE_URL}/users` : `${BASE_URL}/users/login`
         try {
-            // const response = await axios.post(`${BASE_URL}/api/users/`, user)
-            loginUser()
+            const response = await axios.post(baseUrl, userData)
+            const { data } = response
+            const { token } = data
+            setLocalStorage(data)
+
+            if (token) {
+                message.success('User registered successfully')
+                history.push('/dashboard')
+                dispatch({ payload: data, type: 'LOGIN_USER' })
+                dispatch({ payload: false, type: 'SET_LOADER' })
+            }
+            NProgress.done()
         } catch (err) {
             NProgress.done()
-            console.log(err)
+            message.error(err?.response?.data?.message)
+            dispatch({ payload: false, type: 'SET_LOADER' })
         }
     }
 
@@ -122,10 +136,9 @@ export const AuthProvider = ({ children }) => {
     }
 
     function logoutUser() {
-        // removeAuthToken()
+        removeAuthToken()
+        history.push('/')
         dispatch({ type: 'LOGOUT_USER' })
-        localStorage.clear()
-        history.push('/login')
     }
 
     return (
@@ -135,11 +148,11 @@ export const AuthProvider = ({ children }) => {
                 error: state.error,
                 isAuthenticated: state.isAuthenticated,
                 isLoading: state.isLoading,
-                loginUser,
                 logoutUser,
-                registerUser,
+                authenticateUser,
                 responseGoogle,
                 setLoader,
+                checkUserAuthorization,
                 user: state.user,
             }}
         >

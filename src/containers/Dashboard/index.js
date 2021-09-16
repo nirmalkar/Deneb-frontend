@@ -1,36 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Button } from 'antd'
-import { useHistory } from 'react-router-dom'
-import axios from 'axios'
 
 import Modal from 'components/modal'
+import { AuthContext } from 'contexts/AuthContext'
 
 function Dashboard() {
-    const [goals, setGoals] = useState([])
     const [isModalVisible, setIsModalVisible] = useState(false)
-    const history = useHistory()
-    const token = localStorage.getItem('token')
-    const userId = localStorage.getItem('user_id')
-    console.log(goals)
+    const { checkUserAuthorization, logoutUser } = useContext(AuthContext)
+
     useEffect(() => {
-        const fetchGoals = async () => {
-            if (token) {
-                try {
-                    const goals = await axios.get(
-                        `https://lyftrac.herokuapp.com/api/goals/${userId}`,
-                        {
-                            headers: { Authorization: `Bearer ${token}` },
-                        }
-                    )
-                    setGoals(goals.data)
-                } catch (e) {
-                    console.log(e)
-                }
-            } else {
-                history.push('/')
-            }
-        }
-        fetchGoals()
+        checkUserAuthorization()
     }, [])
 
     const onCancel = () => {
@@ -54,6 +33,7 @@ function Dashboard() {
             >
                 Create goal
             </Button>
+            <Button onClick={() => logoutUser()}>Logout</Button>
         </div>
     )
 }

@@ -1,44 +1,30 @@
 import GoogleLogin from 'react-google-login'
-import React, { useContext, useState } from 'react'
-import { Form, message, Tabs } from 'antd'
-import { useHistory } from 'react-router'
+import React, { useContext, useEffect, useState } from 'react'
+import { Form, Tabs } from 'antd'
 
 import { AuthContext } from 'contexts/AuthContext'
 
 import Input from 'components/Input'
 import Card from 'components/Card'
 import Button from 'components/Button'
-import axios from 'axios'
 
 import GoogleImg from '../../assets/images/google.png'
 
 const { REACT_APP_CLIENT_ID } = process.env
 
 const Auth = () => {
-    const { responseGoogle } = useContext(AuthContext)
+    const { responseGoogle, authenticateUser, checkUserAuthorization } =
+        useContext(AuthContext)
     const [tab, setTab] = useState('register')
-
-    const history = useHistory()
 
     const { TabPane } = Tabs
 
-    const submitRegistrationForm = (userData) => {
-        const baseUrl =
-            tab === 'register'
-                ? 'https://lyftrac.herokuapp.com/api/users'
-                : 'https://lyftrac.herokuapp.com/api/users/login'
-        axios
-            .post(baseUrl, userData)
-            .then((response) => {
-                const { token, _id } = response?.data
-                localStorage.setItem('token', token)
-                localStorage.setItem('user_id', _id)
-                if (token) {
-                    message.success('User registered successfully')
-                    history.push('/dashboard')
-                }
-            })
-            .catch((err) => message.error(err?.response?.data?.message))
+    useEffect(() => {
+        checkUserAuthorization()
+    }, [])
+
+    const submitRegistrationForm = (userData, tab) => {
+        authenticateUser({ userData, tab })
     }
     return (
         <div className="auth-container">
@@ -57,7 +43,7 @@ const Auth = () => {
                         }}
                         size={'default'}
                         autoComplete="off"
-                        onFinish={(e) => submitRegistrationForm(e)}
+                        onFinish={(e) => submitRegistrationForm(e, tab)}
                     >
                         <Tabs
                             destroyInactiveTabPane={true}
