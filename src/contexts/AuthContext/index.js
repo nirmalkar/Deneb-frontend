@@ -78,21 +78,26 @@ export const AuthProvider = ({ children }) => {
     async function checkUserAuthorization() {
         dispatch({ payload: true, type: 'SET_LOADER' })
         const token = localStorage.getItem('token')
-        if (token) {
-            const headers = getAuthHeaders(token)
-            const response = await axios.get(
-                `${BASE_URL}/users/profile`,
-                headers
-            )
-            const { data } = response
-            dispatch({ payload: data, type: 'LOGIN_USER' })
-            if (history.location.pathname === '/') {
-                history.push('/dashboard')
+        try {
+            if (token) {
+                const headers = getAuthHeaders(token)
+                const response = await axios.get(
+                    `${BASE_URL}/users/profile`,
+                    headers
+                )
+                const { data } = response
+                dispatch({ payload: data, type: 'LOGIN_USER' })
+                if (history.location.pathname === '/') {
+                    history.push('/dashboard')
+                }
+                dispatch({ payload: false, type: 'SET_LOADER' })
+            } else {
+                history.push('/')
+                dispatch({ payload: false, type: 'SET_LOADER' })
             }
-            dispatch({ payload: false, type: 'SET_LOADER' })
-        } else {
+        } catch (err) {
+            message.error(err?.response?.data?.message)
             history.push('/')
-            dispatch({ payload: false, type: 'SET_LOADER' })
         }
     }
 
