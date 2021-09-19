@@ -3,6 +3,8 @@ import { Button } from 'antd'
 
 import Modal from 'components/modal'
 import { AuthContext } from 'contexts/AuthContext'
+import Input from 'components/Input'
+import Navbar from 'components/Navbar'
 
 function Dashboard() {
     const [isModalVisible, setIsModalVisible] = useState(false)
@@ -19,22 +21,23 @@ function Dashboard() {
         setIsModalVisible(!isModalVisible)
     }
     return (
-        <div>
+        <>
+            <Navbar />
             <Modal
                 visible={isModalVisible}
                 onOk={onCreateGoalOk}
                 onCancel={onCancel}
             >
-                asdfs
+                <Input />
             </Modal>
             <Button
                 onClick={() => setIsModalVisible(!isModalVisible)}
                 type="primary"
             >
-                Create goal
+                Create Goal
             </Button>
             <Button onClick={() => logoutUser()}>Logout</Button>
-        </div>
+        </>
     )
 }
 
