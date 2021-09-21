@@ -4,7 +4,7 @@ import { Form, Tabs } from 'antd'
 
 import { AuthContext } from 'contexts/AuthContext'
 
-import Input from 'components/Input'
+import { Input } from 'components/Input'
 import Card from 'components/Card'
 import Button from 'components/Button'
 

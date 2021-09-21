@@ -13,14 +13,7 @@ const initialState = {
     error: {},
     isAuthenticated: false,
     isLoading: false,
-    user: {
-        avatar: '',
-        firstName: '',
-        isLoggedIn: false,
-        lastName: '',
-        token: '',
-        username: '',
-    },
+    user: {},
 }
 
 export const AuthContext = React.createContext(initialState)
