@@ -1,12 +1,12 @@
 import React from 'react'
-import { Input as AntdInput } from 'antd'
+import { Input as AntdInput, InputNumber as AntdNumInput } from 'antd'
 
 function Input(props) {
-    return (
-        <div>
-            <AntdInput {...props} />
-        </div>
-    )
+    return <AntdInput {...props} />
 }
 
-export default Input
+function InputNumber(props) {
+    return <AntdNumInput {...props} />
+}
+
+export { Input, InputNumber }
