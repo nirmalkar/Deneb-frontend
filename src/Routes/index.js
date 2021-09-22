@@ -6,6 +6,7 @@ import Dashboard from 'containers/Dashboard'
 import Analytics from 'containers/Analytics'
 import LiveStuff from 'containers/LiveStuff'
 import DesignSystem from 'components/DesignSystem/Index'
+import Goals from 'containers/Goals'
 
 const Routes = () => {
     return (
@@ -15,6 +16,7 @@ const Routes = () => {
             <Route exact path="/design-system" component={DesignSystem} />
             <Route exact path="/analytics" component={Analytics} />
             <Route exact path="/live-stuff" component={LiveStuff} />
+            <Route exact path="/goals" component={Goals} />
         </>
     )
 }

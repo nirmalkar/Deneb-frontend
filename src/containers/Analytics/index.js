@@ -1,4 +1,4 @@
-import Navbar from 'components/DesignSystem/Navbar'
+import Navbar from 'components/Navbar'
 import React from 'react'
 
 function Analytics() {
