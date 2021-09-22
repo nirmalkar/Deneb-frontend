@@ -4,9 +4,9 @@ import { Form, Tabs } from 'antd'
 
 import { AuthContext } from 'contexts/AuthContext'
 
-import { Input } from 'components/Input'
-import Card from 'components/Card'
-import Button from 'components/Button'
+import { Input } from 'components/DesignSystem/Input'
+import Card from 'components/DesignSystem/Card'
+import Button from 'components/DesignSystem/Button'
 
 import GoogleImg from '../../assets/images/google.png'
 
