@@ -2,12 +2,12 @@ import React, { useEffect, useState, useContext } from 'react'
 import Button from 'components/DesignSystem/Button'
 
 import { AuthContext } from 'contexts/AuthContext'
-import Navbar from 'components/DesignSystem/Navbar'
+import Navbar from 'components/Navbar'
 import CreateGoalModal from 'components/CreateGoalModal'
 
 function Dashboard() {
     const [isModalVisible, setIsModalVisible] = useState(false)
-    const { checkUserAuthorization, logoutUser } = useContext(AuthContext)
+    const { checkUserAuthorization } = useContext(AuthContext)
 
     useEffect(() => {
         checkUserAuthorization()
@@ -23,13 +23,20 @@ function Dashboard() {
     return (
         <>
             <Navbar />
-            <Button
-                onClick={() => setIsModalVisible(!isModalVisible)}
-                type="primary"
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginTop: '2rem',
+                }}
             >
-                Create Goal
-            </Button>
-            <Button onClick={() => logoutUser()}>Logout</Button>
+                <Button
+                    onClick={() => setIsModalVisible(!isModalVisible)}
+                    type="primary"
+                >
+                    Create Goal
+                </Button>
+            </div>
             <CreateGoalModal
                 setIsModalVisible={setIsModalVisible}
                 isModalVisible={isModalVisible}
