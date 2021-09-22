@@ -106,7 +106,9 @@ export const AuthProvider = ({ children }) => {
             setLocalStorage(data)
 
             if (token) {
-                message.success('User registered successfully')
+                baseUrl === `${BASE_URL}/users/login`
+                    ? message.success('User Logged in successfully')
+                    : message.success('User registered successfully')
                 history.push('/dashboard')
                 dispatch({ payload: data, type: 'LOGIN_USER' })
                 dispatch({ payload: false, type: 'SET_LOADER' })

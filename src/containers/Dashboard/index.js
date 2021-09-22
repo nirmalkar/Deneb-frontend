@@ -18,7 +18,7 @@ const initialGoalState = {
     image: '',
     children: [],
     progress: {
-        progress: 0,
+        progress: '',
         startsAt: 0,
         target: 100,
     },
@@ -42,10 +42,16 @@ function Dashboard() {
     }
     const submitGoal = async (goal) => {
         if (!goal.title) return message.error('Please enter title')
+        if (!goal.type) return message.error('Please select type')
+        if (!goal.progress.progress)
+            return message.error('Please enter progress')
         goal.user_id = user._id
         const token = localStorage.getItem('token')
         try {
             axios.post(`${BASE_URL}/goals`, { goal }, getAuthHeaders(token))
+            setGoal(initialGoalState)
+            setIsModalVisible(!isModalVisible)
+            message.success('Goal created successfully!')
         } catch (err) {
             console.log(err)
         }
@@ -165,7 +171,7 @@ function Dashboard() {
                     >
                         <Select
                             name="type"
-                            style={{ width: 200 }}
+                            style={{ width: 315 }}
                             onChange={(e) => handleFromData(e, 'type')}
                             defaultValue={goal.type}
                         >
@@ -182,7 +188,7 @@ function Dashboard() {
                         ]}
                     >
                         <Input
-                            defaultValue={goal.progress.progress}
+                            value={goal.progress.progress}
                             name="progress"
                             onChange={(e) => handleFromData(e)}
                         />
