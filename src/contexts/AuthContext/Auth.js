@@ -1,5 +1,8 @@
 export const removeAuthToken = () => {
-    localStorage.removeItem('token')
+    const token = localStorage.getItem('token')
+    if (token) {
+        localStorage.removeItem('token')
+    }
 }
 
 export const setLocalStorage = (data) => {

@@ -86,11 +86,13 @@ export const AuthProvider = ({ children }) => {
                 dispatch({ payload: false, type: 'SET_LOADER' })
             } else {
                 history.push('/')
+                removeAuthToken()
                 dispatch({ payload: false, type: 'SET_LOADER' })
             }
         } catch (err) {
             message.error(err?.response?.data?.message)
             history.push('/')
+            removeAuthToken()
         }
     }
 
@@ -114,6 +116,7 @@ export const AuthProvider = ({ children }) => {
                 dispatch({ payload: false, type: 'SET_LOADER' })
             }
             NProgress.done()
+            console.log(data)
         } catch (err) {
             NProgress.done()
             message.error(err?.response?.data?.message)
