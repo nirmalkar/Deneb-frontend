@@ -3,8 +3,6 @@ import propTypes from 'prop-types'
 
 import { Select as AntdSelect } from 'antd'
 
-const { Option } = Select
-
 function Select(props) {
     const { children } = props
     return <AntdSelect {...props}>{children}</AntdSelect>
@@ -12,7 +10,7 @@ function Select(props) {
 
 const Options = (props) => {
     const { children } = props
-    return <Option {...props}>{children}</Option>
+    return <Select.Option {...props}>{children}</Select.Option>
 }
 
 Select.propTypes = {

@@ -1,5 +1,6 @@
 import GoogleLogin from 'react-google-login'
 import React, { useContext, useEffect, useState } from 'react'
+import { useHistory } from 'react-router'
 import { Form, Tabs } from 'antd'
 
 import { AuthContext } from 'contexts/AuthContext'
@@ -13,29 +14,34 @@ import GoogleImg from '../../assets/images/google.png'
 const { REACT_APP_CLIENT_ID } = process.env
 
 const Auth = () => {
-    const { responseGoogle, authenticateUser, checkUserAuthorization } =
-        useContext(AuthContext)
+    const { responseGoogle, authenticateUser } = useContext(AuthContext)
     const [tab, setTab] = useState('register')
+    const history = useHistory()
 
     const { TabPane } = Tabs
 
     useEffect(() => {
-        checkUserAuthorization()
+        const token = localStorage.getItem('token')
+        if (token) {
+            history.push('/dashboard')
+        }
+        document.getElementById('name').focus()
     }, [])
 
     const submitRegistrationForm = (userData, tab) => {
         authenticateUser({ userData, tab })
     }
+
     return (
         <div className="auth-container">
             <div className="auth-row">
                 <Card bordered={false}>
                     <Form
                         labelCol={{
-                            span: 4,
+                            span: 5,
                         }}
                         wrapperCol={{
-                            span: 14,
+                            span: 18,
                         }}
                         layout="horizontal"
                         initialValues={{
@@ -59,10 +65,15 @@ const Auth = () => {
                                             message: 'Please input your Name!',
                                         },
                                     ]}
+                                    aria-label="register-input"
                                     label="Name"
                                     name="name"
                                 >
-                                    <Input placeholder="Name" />
+                                    <Input
+                                        data-testid="confirm-checkbox"
+                                        id="name"
+                                        placeholder="Name"
+                                    />
                                 </Form.Item>
                                 <Form.Item
                                     rules={[
@@ -88,6 +99,7 @@ const Auth = () => {
                                     name="password"
                                 >
                                     <Input
+                                        id="password"
                                         type="password"
                                         placeholder="Password"
                                     />
@@ -104,7 +116,7 @@ const Auth = () => {
                                     label="Email"
                                     name="email"
                                 >
-                                    <Input placeholder="Email" />
+                                    <Input id="email" placeholder="Email" />
                                 </Form.Item>
                                 <Form.Item
                                     rules={[
