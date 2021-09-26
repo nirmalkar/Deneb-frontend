@@ -15,7 +15,7 @@ const setup = () => {
     )
 }
 
-test('abc', async () => {
+test('Submit form data on submit button click', () => {
     setup()
     const submitButton = screen.getByRole('button', { name: /submit/i })
     userEvent.click(submitButton)
