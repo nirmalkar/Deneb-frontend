@@ -1,0 +1,56 @@
+$spaceamounts: (1, 2, 3, 4, 5, 7, 9, 10, 11, 14, 17, 21, 40, 45, 50, 60, 100);
+
+@each $spaceamount in $spaceamounts {
+    .m-#{$spaceamount} {
+        margin: #{$spaceamount}em;
+    }
+    .mt-#{$spaceamount} {
+        margin-top: #{$spaceamount}em;
+    }
+    .mb-#{$spaceamount} {
+        margin-bottom: #{$spaceamount}em;
+    }
+    .mr-#{$spaceamount} {
+        margin-right: #{$spaceamount}em;
+    }
+    .ml-#{$spaceamount} {
+        margin-left: #{$spaceamount}em;
+    }
+    .mx-#{$spaceamount} {
+        margin: 0em #{$spaceamount}em;
+    }
+    .my-#{$spaceamount} {
+        margin: #{$spaceamount}em 0em;
+    }
+    .p-#{$spaceamount} {
+        padding: #{$spaceamount}em;
+    }
+    .pt-#{$spaceamount} {
+        padding-top: #{$spaceamount}em;
+    }
+    .pb-#{$spaceamount} {
+        padding-bottom: #{$spaceamount}em;
+    }
+    .pr-#{$spaceamount} {
+        padding-right: #{$spaceamount}em;
+    }
+    .pl-#{$spaceamount} {
+        padding-left: #{$spaceamount}em;
+    }
+    .px-#{$spaceamount} {
+        padding: 0em #{$spaceamount}em;
+    }
+    .py-#{$spaceamount} {
+        padding: #{$spaceamount}em 0em;
+    }
+    .h-#{$spaceamount} {
+        height: #{$spaceamount}vh;
+    }
+    .w-#{$spaceamount} {
+        width: #{$spaceamount}em;
+    }
+}
+
+.b-r {
+    border-radius: 0.3em !important;
+}
