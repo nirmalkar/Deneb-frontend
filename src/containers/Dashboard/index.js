@@ -4,6 +4,8 @@ import Button from 'components/DesignSystem/Button'
 import { AuthContext } from 'contexts/AuthContext'
 import Navbar from 'components/Navbar'
 import CreateGoalModal from 'components/CreateGoalModal'
+import { GoalsProvider } from 'contexts/GoalsContext'
+import GoalList from './components/GoalList'
 
 function Dashboard() {
     const [isModalVisible, setIsModalVisible] = useState(false)
@@ -11,6 +13,7 @@ function Dashboard() {
 
     useEffect(() => {
         checkUserAuthorization()
+        return () => {}
     }, [])
 
     const onCancel = () => {
@@ -21,7 +24,7 @@ function Dashboard() {
     }
 
     return (
-        <>
+        <GoalsProvider>
             <Navbar />
             <div
                 style={{
@@ -37,13 +40,14 @@ function Dashboard() {
                     Create Goal
                 </Button>
             </div>
+            <GoalList />
             <CreateGoalModal
                 setIsModalVisible={setIsModalVisible}
                 isModalVisible={isModalVisible}
                 onCreateGoalOk={onCreateGoalOk}
                 onCancel={onCancel}
             />
-        </>
+        </GoalsProvider>
     )
 }
 

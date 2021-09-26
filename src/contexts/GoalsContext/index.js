@@ -7,7 +7,7 @@ import axios from 'axios'
 
 import { BASE_URL, getAuthHeaders } from 'constants/authConstants'
 
-const initialState = {}
+const initialState = { isLoading: false, goals: [] }
 
 export const GoalsContext = React.createContext(initialState)
 
@@ -21,7 +21,7 @@ const GoalsReducer = (state, action) => {
         case 'GOALS':
             return {
                 ...state,
-                isLoading: action.payload,
+                goals: action.payload,
             }
         default:
             return state
@@ -33,22 +33,23 @@ export const GoalsProvider = ({ children }) => {
     function setLoader(isLoading) {
         dispatch({ payload: isLoading, type: 'SET_LOADER' })
     }
-
     async function fetchGoals({ userId }) {
-        dispatch({ payload: true, type: 'SET_LOADER' })
+        console.log(userId)
+        setLoader(true)
         NProgress.start()
         const baseUrl = `${BASE_URL}/goals/${userId}`
-        const token = localStorage.get('token')
+        const token = localStorage.getItem('token')
         const headers = getAuthHeaders(token)
         try {
             const response = await axios.get(baseUrl, headers)
             const { data } = response
             dispatch({ payload: data, type: 'GOALS' })
+            setLoader(false)
             NProgress.done()
         } catch (err) {
             NProgress.done()
             message.error(err?.response?.data?.message)
-            dispatch({ payload: false, type: 'SET_LOADER' })
+            setLoader(false)
         }
     }
 
@@ -59,6 +60,7 @@ export const GoalsProvider = ({ children }) => {
                 isLoading: state.isLoading,
                 fetchGoals,
                 setLoader,
+                goals: state.goals,
                 user: state.user,
             }}
         >
