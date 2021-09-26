@@ -21,7 +21,7 @@ const GoalList = React.memo(() => {
     const listGoalsComponent = goals.map((ele) => (
         <div key={ele._id} className="my-2">
             <Card>
-                <Link to={`/${ele._id}`}>{ele?.goal?.title}</Link>
+                <Link to={`goals/${ele._id}`}>{ele?.goal?.title}</Link>
             </Card>
         </div>
     ))

@@ -2,9 +2,11 @@ import React, { Suspense } from 'react'
 import { Route } from 'react-router'
 
 import Auth from 'containers/Auth'
+import { GoalsProvider } from 'contexts/GoalsContext'
 
 const Dashboard = React.lazy(() => import('containers/Dashboard'))
-const Goal = React.lazy(() => import('containers/Goal'))
+const Goals = React.lazy(() => import('containers/Goals'))
+const Goal = React.lazy(() => import('containers/Goals/components/Goal'))
 const Analytics = React.lazy(() => import('containers/Analytics'))
 const LiveStuff = React.lazy(() => import('containers/LiveStuff'))
 const DesignSystem = React.lazy(() => import('components/DesignSystem'))
@@ -18,7 +20,10 @@ const Routes = () => {
                 <Route exact path="/design-system" component={DesignSystem} />
                 <Route exact path="/analytics" component={Analytics} />
                 <Route exact path="/live-stuff" component={LiveStuff} />
-                <Route exact path="/goal" component={Goal} />
+                <GoalsProvider>
+                    <Route exact path="/goals" component={Goals} />
+                    <Route exact path="/goals/:id" component={Goal} />
+                </GoalsProvider>
             </Suspense>
         </>
     )
