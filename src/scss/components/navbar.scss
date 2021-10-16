@@ -4,10 +4,11 @@
     justify-content: start;
     align-items: center;
     height: 60px;
-    color: #fff;
-    -webkit-box-shadow: 0 8px 6px -6px #999;
-    -moz-box-shadow: 0 8px 6px -6px #999;
-    box-shadow: 0 8px 6px -6px #999;
+    padding-left: 5%;
+    // color: #fff;
+    // -webkit-box-shadow: 0 8px 6px -6px #999;
+    // -moz-box-shadow: 0 8px 6px -6px #999;
+    // box-shadow: 0 8px 6px -6px #999;
     .link {
         color: #666;
         font-weight: 600;
@@ -24,5 +25,8 @@
         display: flex;
         justify-content: right;
         margin-right: 6rem;
+    }
+    .links-container {
+        // padding-left: 3rem;
     }
 }
