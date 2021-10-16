@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from 'react'
+import { Skeleton, Col, Row, Tree, Progress } from 'antd'
 // import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
@@ -7,7 +8,7 @@ import { GoalsContext } from 'contexts/GoalsContext'
 // import { Col, Row } from 'antd'
 import Navbar from 'components/Navbar'
 import { AuthContext } from 'contexts/AuthContext'
-import { Col, Row } from 'antd'
+import Card from 'components/DesignSystem/Card'
 
 const Goal = React.memo((props) => {
     const { match } = props
@@ -28,20 +29,47 @@ const Goal = React.memo((props) => {
 
     const goalObj = goals?.find((ele) => ele._id === id)
     const goal = goalObj?.goal
+    if (goal?.title) {
+        goal.key = goal.user_id
+    }
     console.log(goal)
     const goalComponent = (
-        <Row justify="center">
+        <Row>
             <Col md={18}>
-                <div className="m-5">
+                <div className="my-5">
                     <h2>{goal?.title.toUpperCase()}</h2>
                 </div>
             </Col>
         </Row>
     )
+    const goalsWithChildren = (
+        <Card>
+            {goal ? (
+                <Row>
+                    <Col md={10}>
+                        <Tree treeData={[goal]} />{' '}
+                    </Col>
+                    <Col md={14}>
+                        <Progress
+                            percent={goal?.progress?.progress}
+                            status="active"
+                        />
+                    </Col>
+                </Row>
+            ) : (
+                <Skeleton />
+            )}
+        </Card>
+    )
     return (
         <>
             <Navbar />
-            {goalComponent}
+            <Row justify="center">
+                <Col md={12}>
+                    {goalComponent}
+                    {goalsWithChildren}
+                </Col>
+            </Row>
         </>
     )
 })

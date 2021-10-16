@@ -78,7 +78,7 @@ function CreateGoalModal({
     ))
 
     const handleChildrenInput = (e, id) => {
-        const indexOfChildren = goal.children.findIndex((a) => a.cid === id)
+        const indexOfChildren = goal.children.findIndex((a) => a.key === id)
         const updatedChildren = goal.children
         updatedChildren[indexOfChildren].title = e.target.value
         setGoal({
@@ -92,7 +92,8 @@ function CreateGoalModal({
             children: [
                 ...goal.children,
                 {
-                    cid: uuid(),
+                    key: uuid(),
+                    icon: '',
                     title: '',
                     progress: {
                         progress: 0,
@@ -104,7 +105,7 @@ function CreateGoalModal({
         })
     }
     const keyResultInput = goal.children.map((ele) => {
-        const id = ele.cid
+        const id = ele.key
         return (
             <>
                 <Form.Item
