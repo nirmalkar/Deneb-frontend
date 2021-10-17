@@ -1,0 +1,21 @@
+.antd-tree-cmp {
+    .tree-title-container {
+        display: flex;
+        .tree-delete {
+            position: absolute;
+            z-index: 99;
+            left: 8rem;
+            .delete {
+                width: 2rem;
+            }
+        }
+        .tree-edit {
+            position: absolute;
+            z-index: 99;
+            left: 5rem;
+            .edit {
+                width: 1.5rem;
+            }
+        }
+    }
+}

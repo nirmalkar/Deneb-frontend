@@ -1,63 +1,84 @@
-import React, { useState } from 'react'
-import { Tree, Switch } from 'antd'
+import React from 'react'
+import { Tree } from 'antd'
 import propTypes from 'prop-types'
 
-function AntdTree({ treeData }) {
-    const [showLine, setShowLine] = useState(true)
-    const [showIcon, setShowIcon] = useState(false)
-    const [showLeafIcon, setShowLeafIcon] = useState(true)
+import DeleteIcon from 'assets/images/remove.svg'
+import EditIcon from 'assets/images/edit.svg'
 
+const { TreeNode } = Tree
+function AntdTree({ treeData }) {
     const onSelect = (selectedKeys, info) => {
         console.log('selected', selectedKeys, info)
     }
 
-    const onSetLeafIcon = (checked) => {
-        setShowLeafIcon(checked)
-        setShowLine({
-            showLeafIcon: checked,
+    const treeComponent = (data) =>
+        data.map((item) => {
+            if (item.children) {
+                return (
+                    <TreeNode
+                        title={
+                            <div className="tree-title-container">
+                                {item.title}{' '}
+                                <div className="tree-edit">
+                                    <img
+                                        className="edit"
+                                        src={EditIcon}
+                                        alt="edit"
+                                    />
+                                </div>
+                                <div className="tree-delete">
+                                    <img
+                                        className="delete"
+                                        src={DeleteIcon}
+                                        alt="delete"
+                                    />
+                                </div>
+                            </div>
+                        }
+                        key={item.key}
+                        dataRef={item}
+                    >
+                        {treeComponent(item.children)}
+                    </TreeNode>
+                )
+            }
+            return (
+                <TreeNode
+                    key={item.key}
+                    title={
+                        <div className="tree-title-container">
+                            {item.title}{' '}
+                            <div className="tree-edit">
+                                <img
+                                    className="edit"
+                                    src={EditIcon}
+                                    alt="edit"
+                                />
+                            </div>
+                            <div className="tree-delete">
+                                <img
+                                    className="delete"
+                                    src={DeleteIcon}
+                                    alt="delete"
+                                />
+                            </div>
+                        </div>
+                    }
+                />
+            )
         })
-    }
-
-    const onSetShowLine = (checked) => {
-        setShowLine(
-            checked
-                ? {
-                      showLeafIcon,
-                  }
-                : false
-        )
-    }
 
     return (
-        <div>
-            <div
-                style={{
-                    marginBottom: 16,
-                }}
-            >
-                showLine:{' '}
-                <Switch checked={!!showLine} onChange={onSetShowLine} />
-                <br />
-                <br />
-                showIcon: <Switch checked={showIcon} onChange={setShowIcon} />
-                <br />
-                <br />
-                showLeafIcon:{' '}
-                <Switch checked={showLeafIcon} onChange={onSetLeafIcon} />
-            </div>
-            <Tree
-                showLine={showLine}
-                showIcon={showIcon}
-                defaultExpandedKeys={['0-0-0']}
-                onSelect={onSelect}
-                treeData={treeData}
-            />
+        <div className="antd-tree-cmp">
+            <Tree showLine={true} showIcon={true} onSelect={onSelect}>
+                {treeComponent(treeData)}
+            </Tree>
         </div>
     )
 }
 
 AntdTree.propTypes = {
-    treeData: propTypes.arrayOf.isRequired,
+    treeData: propTypes.arrayOf(propTypes.object).isRequired,
 }
 
 export default AntdTree

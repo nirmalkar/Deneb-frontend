@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from 'react'
-import { Skeleton, Col, Row, Tree, Progress } from 'antd'
+import { Skeleton, Col, Row, Progress } from 'antd'
 // import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import { GoalsContext } from 'contexts/GoalsContext'
+import Tree from 'components/Tree'
 // import Card from 'components/DesignSystem/Card'
 // import { Col, Row } from 'antd'
 import Navbar from 'components/Navbar'
@@ -50,10 +51,7 @@ const Goal = React.memo((props) => {
                         <Tree treeData={[goal]} />{' '}
                     </Col>
                     <Col md={14}>
-                        <Progress
-                            percent={goal?.progress?.progress}
-                            status="active"
-                        />
+                        <Progress percent={goal?.progress?.progress} />
                     </Col>
                 </Row>
             ) : (
@@ -62,7 +60,7 @@ const Goal = React.memo((props) => {
         </Card>
     )
     return (
-        <>
+        <div className="goal-container">
             <Navbar />
             <Row justify="center">
                 <Col md={12}>
@@ -70,7 +68,7 @@ const Goal = React.memo((props) => {
                     {goalsWithChildren}
                 </Col>
             </Row>
-        </>
+        </div>
     )
 })
 
